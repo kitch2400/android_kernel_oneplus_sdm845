@@ -550,6 +550,11 @@ endif
 CLANG_FLAGS	+= -Werror=unknown-warning-option
 CLANG_FLAGS	+= $(call cc-option, -Wno-misleading-indentation)
 CLANG_FLAGS	+= $(call cc-option, -Wno-bool-operation)
+CLANG_FLAGS     += $(call cc-option, -Wno-void-ptr-dereference)
+CLANG_FLAGS     += $(call cc-option, -Wno-enum-conversion)
+CLANG_FLAGS     += $(call cc-option, -Wno-single-bit-bitfield-constant-conversion)
+CLANG_FLAGS     += $(call cc-option, -Wno-array-parameter)
+CLANG_FLAGS     += $(call cc-option, -Wno-strict-prototypes)
 KBUILD_CFLAGS	+= $(CLANG_FLAGS)
 KBUILD_AFLAGS	+= $(CLANG_FLAGS)
 endif
