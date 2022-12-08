@@ -551,7 +551,7 @@ CLANG_FLAGS     += $(call cc-option, -Wno-enum-conversion)
 CLANG_FLAGS     += $(call cc-option, -Wno-single-bit-bitfield-constant-conversion)
 CLANG_FLAGS     += $(call cc-option, -Wno-array-parameter)
 CLANG_FLAGS     += $(call cc-option, -Wno-strict-prototypes)
-CLANG_FLAGS     += $(call cc-option, -O3)
+CLANG_FLAGS     += $(call cc-option, -O2)
 KBUILD_CFLAGS	+= $(CLANG_FLAGS)
 KBUILD_AFLAGS	+= $(CLANG_FLAGS)
 endif
