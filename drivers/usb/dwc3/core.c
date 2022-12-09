@@ -1285,17 +1285,9 @@ static int dwc3_probe(struct platform_device *pdev)
 					"snps,usb2-l1-disable");
 	dwc->normal_eps_in_gsi_mode = device_property_read_bool(dev,
 					"normal-eps-in-gsi-mode");
-	dwc->enable_super_speed = device_property_read_bool(dev,
-					"op,enable_super_speed");
 	if (dwc->enable_bus_suspend) {
 		pm_runtime_set_autosuspend_delay(dev, 500);
 		pm_runtime_use_autosuspend(dev);
-	}
-
-	if (!dwc->enable_super_speed) {
-		pr_info("Force USB running as High speed");
-		dwc->max_hw_supp_speed = USB_SPEED_HIGH;
-		dwc->maximum_speed = USB_SPEED_HIGH;
 	}
 
 	dwc->lpm_nyet_threshold = lpm_nyet_threshold;
@@ -1386,31 +1378,6 @@ static int dwc3_probe(struct platform_device *pdev)
 err_core_init:
 	dwc3_core_exit_mode(dwc);
 
-//err5:
-//	dwc3_event_buffers_cleanup(dwc);
-//
-//	usb_phy_shutdown(dwc->usb2_phy);
-//	usb_phy_shutdown(dwc->usb3_phy);
-//	phy_exit(dwc->usb2_generic_phy);
-//	phy_exit(dwc->usb3_generic_phy);
-
-//	usb_phy_set_suspend(dwc->usb2_phy, 1);
-//	usb_phy_set_suspend(dwc->usb3_phy, 1);
-//	phy_power_off(dwc->usb2_generic_phy);
-//	phy_power_off(dwc->usb3_generic_phy);
-
-	dwc3_ulpi_exit(dwc);
-
-//err4:
-//	dwc3_free_scratch_buffers(dwc);
-
-//err3:
-//	dwc3_free_event_buffers(dwc);
-//	dwc3_ulpi_exit(dwc);
-
-//err2:
-//	pm_runtime_allow(&pdev->dev);
-
 err1:
 	destroy_workqueue(dwc->dwc_wq);
 err0:
@@ -1448,8 +1415,6 @@ static int dwc3_remove(struct platform_device *pdev)
 	pm_runtime_put_sync(&pdev->dev);
 	pm_runtime_allow(&pdev->dev);
 	pm_runtime_disable(&pdev->dev);
-	pm_runtime_put_noidle(&pdev->dev);
-	pm_runtime_set_suspended(&pdev->dev);
 
 	dwc3_free_event_buffers(dwc);
 	dwc3_free_scratch_buffers(dwc);
